@@ -18,9 +18,6 @@ app.use(
 );
 
 const proxyOptions = {
-  proxyReqPathResolver: (req) => {
-    return req.originalUrl.replace(/^\v1/, "/api");
-  },
   proxyErrorHandler: (err, res, next) => {
     res.status(500).json({
       message: "Internal server error",
