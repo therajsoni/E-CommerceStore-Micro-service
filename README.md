@@ -12,6 +12,7 @@ Frontend (React) → API Gateway → Microservices
                                     ├── Product Service (3002)
                                     ├── Cart Service (3003)
                                     └── Order Service (3004)
+                                    └── api-gateway (5000)
 ```
 
 ## 🔧 Technology Stack
@@ -105,8 +106,12 @@ cd ecommerce-microservices
 2. **Install dependencies for each service**
 ```bash
 
+
 # Install User Service dependencies
 cd backend/user-service && npm install
+
+# Install Api gateway dependencies
+cd ../api-gateway && npm install
 
 # Install Product Service dependencies
 cd ../product-service && npm install
@@ -119,11 +124,25 @@ cd ../order-service && npm install
 
 # Install Frontend dependencies
 cd ../../frontend && npm install
+
 ```
 
 3. **Set up environment variables**
 
 Create `.env` files in each service directory:
+
+**backend/api-gateway/.env:**
+```env
+
+frontend http://localhost:5000/v1/users -> http://localhost:5000/api/users
+
+PORT=5000
+ORDER_SERVICE=http://localhost:3004
+CART_SERVICE=http://localhost:3003
+PRODUCT_SERVICE=http://localhost:3002
+AUTH_SERVICE=http://localhost:3001
+```
+
 
 **backend/user-service/.env:**
 ```env
