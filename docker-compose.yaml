@@ -1,4 +1,10 @@
 services:
+ mongodb:
+  image: mongo:latest
+  ports:
+   - "27017:27017"
+  networks:
+   - app-network
  frontend: 
   build: ./frontend
   container_name: frontend
@@ -7,10 +13,10 @@ services:
   depends_on: 
    - api-gateway
   environment:
-   -  REACT_APP_USER_SERVICE_URL=http://user-service:5000
-   -  REACT_APP_PRODUCT_SERVICE_URL=http://product-service:5000
-   -  REACT_APP_CART_SERVICE_URL=http://card-service:5000
-   -  REACT_APP_ORDER_SERVICE_URL=http://order-service:5000
+   -  REACT_APP_USER_SERVICE_URL=http://localhost:5000
+   -  REACT_APP_PRODUCT_SERVICE_URL=http://localhost:5000
+   -  REACT_APP_CART_SERVICE_URL=http://localhost:5000
+   -  REACT_APP_ORDER_SERVICE_URL=http://localhost:5000
   networks:
     - app-network
  api-gateway:
@@ -35,7 +41,7 @@ services:
    - "3001:3001"
   environment:
    - PORT=3001
-   - MONGODB_URI=mongodb://localhost:27017/ecommerce_users
+   - MONGODB_URI=mongodb://mongodb:27017/ecommerce_users
    - JWT_SECRET=your-jwt-secret-key
   networks: 
    - app-network
@@ -46,7 +52,7 @@ services:
    - "3002:3002"
   environment:
    - PORT=3002
-   - MONGODB_URI=mongodb://localhost:27017/ecommerce_products
+   - MONGODB_URI=mongodb://mongodb:27017/ecommerce_products
   networks:
    - app-network 
  card-service:
@@ -58,7 +64,7 @@ services:
     - product-service
   environment:
    - PORT=3003
-   - MONGODB_URI=mongodb://localhost:27017/ecommerce_carts
+   - MONGODB_URI=mongodb://mongodb:27017/ecommerce_carts
    - PRODUCT_SERVICE_URL=http://api-gateway:5000
   networks:
    - app-network 
@@ -73,7 +79,7 @@ services:
     - card-service
   environment: 
    - PORT=3004
-   - MONGODB_URI=mongodb://localhost:27017/ecommerce_orders
+   - MONGODB_URI=mongodb://mongodb:27017/ecommerce_orders
    - CART_SERVICE_URL=http://api-gateway:3003
    - PRODUCT_SERVICE_URL=http://api-gateway:3002
    - USER_SERVICE_URL=http://api-gateway:3001
